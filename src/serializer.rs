@@ -20,7 +20,7 @@ pub fn serialize<S: Serialize, W: io::Write>(
     wtr: &mut Writer<W>,
     value: S,
 ) -> Result<(), Error> {
-    value.serialize(&mut SeRecord { wtr: wtr })
+    value.serialize(&mut SeRecord { wtr })
 }
 
 struct SeRecord<'w, W: 'w + io::Write> {
@@ -205,12 +205,7 @@ impl<'a, 'w, W: io::Write> Serializer for &'a mut SeRecord<'w, W> {
         self,
         _len: Option<usize>,
     ) -> Result<Self::SerializeMap, Self::Error> {
-        // The right behavior for serializing maps isn't clear.
-        Err(Error::custom(
-            "serializing maps is not supported, \
-             if you have a use case, please file an issue at \
-             https://github.com/BurntSushi/rust-csv",
-        ))
+        Ok(self)
     }
 
     fn serialize_struct(
